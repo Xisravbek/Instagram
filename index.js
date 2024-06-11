@@ -1,6 +1,7 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const dotenv = require('dotenv');
+const { default: mongoose } = require('mongoose');
 dotenv.config();
 
 const PORT = process.env.PORT || 4005;
@@ -12,4 +13,11 @@ app.get('/', (req, res ) => {
     
 })
 
-app.listen(PORT , console.log(`Server started in ${PORT} PORT `));
+const MONGO_URL = process.env.MONGO_URL;
+
+mongoose.connect(MONGO_URL, {}).then(() => {
+    app.listen(PORT , console.log(`Server started in ${PORT} PORT `));
+}).catch(err => {
+    console.log(err);
+})
+
