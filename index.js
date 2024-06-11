@@ -9,6 +9,7 @@ const app = express();
 
 app.get('/', (req, res ) => {
     res.send("Home")
+    
 })
 
 app.listen(PORT , console.log(`Server started in ${PORT} PORT `));
