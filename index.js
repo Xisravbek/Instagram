@@ -1,7 +1,7 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const dotenv = require('dotenv');
-const { default: mongoose } = require('mongoose');
+const  mongoose  = require('mongoose');
 dotenv.config();
 
 const PORT = process.env.PORT || 4005;
