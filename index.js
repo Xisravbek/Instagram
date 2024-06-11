@@ -1,17 +1,16 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const dotenv = require('dotenv');
-const { default: mongoose } = require('mongoose');
-dotenv.config();
+ const { default: mongoose } = require('mongoose');
+ dotenv.config();
 
-const PORT = process.env.PORT || 4005;
+ const PORT = process.env.PORT || 4005;
 
 const app = express();
 
-app.get('/', (req, res ) => {
+ app.get('/', (req, res ) => {
     res.send("Home")
     
-
 
 
 })
