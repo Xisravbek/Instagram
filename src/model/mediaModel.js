@@ -6,8 +6,7 @@ const mediaSchema = new mongoose.Schema({
         ref: "Posts"
     },
     mediaType: {
-        enum: ["mp4", "png", "img"],
-        required: true
+        enum: ["mp4", "png", "img", "image", "video"]
     },
     url: {
         type: String,

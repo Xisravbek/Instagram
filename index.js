@@ -3,19 +3,37 @@ const fileUpload = require('express-fileupload');
 const cors = require('cors')
 const dotenv = require('dotenv');
 const  mongoose  = require('mongoose');
+const cloudinary = require('cloudinary');
+const fs = require('fs')
+
 dotenv.config();
 const app = express();
 
 const PORT = process.env.PORT || 4005;
+
+//cloudinary settings
+
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET
+})
+
+
 //routerlani ulash
 const userRouter = require('./src/router/userRouter')
+const postsRouter = require('./src/router/postsRouter')
+
+
+
+
 
 
 //midlwares
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
-app.use(fileUpload())
+app.use(fileUpload({useTempFiles: true}))
 app.use(cors())
 
 app.get('/', (req, res ) => {
@@ -23,7 +41,8 @@ app.get('/', (req, res ) => {
     
 })
 //routerlani ishlatsh
-app.use('/user',userRouter)
+app.use('/user',userRouter);
+app.use('/posts', postsRouter)
 
 const MONGO_URL = process.env.MONGO_URL;
 
