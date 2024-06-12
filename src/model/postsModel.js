@@ -8,6 +8,9 @@ const postsSchema = new mongoose.Schema({
     isBanned: {
         type: Boolean,
         default: false
+    },
+    caption: {
+        type: String
     }
 },
 {
