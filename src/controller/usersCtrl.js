@@ -7,14 +7,19 @@ const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY
 
 const userCtrl = {
     SignUp: async (req,res) => {
-        const {email} = req.body
+        const {email,userName} = req.body
         try {
-            const Useritekshr = await Users.findOne({email})
+            const users = await Users.findOne({email})
 
-            if(Useritekshr){
+            const username = await Users.findOne({userName})
+
+            if(users){
                 return res.status(400).json({message: "Bu emailli foydalanuvchi mavjud!"})
             }
 
+            if(userName){
+                return res.status(400).json({message: "Bu nomli foydalanuvchi mavjud!"})
+            }
             const paswordhash = await bcrypt.hash(req.body.password,10)
 
             req.body.password = paswordhash
@@ -25,7 +30,7 @@ const userCtrl = {
 
             delete user._doc.password
 
-            const token = JWT.sign(user._doc, JWT_SECRET_KEY,{expiresIn:'5h'})
+            const token = JWT.sign(user._doc, JWT_SECRET_KEY)
 
             res.status(201).send({message:"Created user",user,token})
             
@@ -127,6 +132,26 @@ const userCtrl = {
         } catch (error) {
             res.status(503).send({message: error.message})
         }
+    },
+    getUser: async (req,res) => {
+        try {
+            const {id} = req.params
+
+            const user = await Users.findById(id)
+
+            if(!user){
+                return res.status(404).json({massage:'User not found'})
+            }
+            
+            delete user._doc.password
+
+            res.status(200).send({message:"User",user})
+        } catch (error) {
+            
+        }
+    },
+    searchUsers: async (req,res) => {
+
     }
 
 }
