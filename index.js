@@ -4,7 +4,7 @@ const cors = require('cors')
 const dotenv = require('dotenv');
 const  mongoose  = require('mongoose');
 const cloudinary = require('cloudinary');
-const fs = require('fs')
+const fs = require('fs');
 
 dotenv.config();
 const app = express();
@@ -22,8 +22,8 @@ cloudinary.config({
 
 //routerlani ulash
 const userRouter = require('./src/router/userRouter')
-const postsRouter = require('./src/router/postsRouter')
-
+const postsRouter = require('./src/router/postsRouter');
+const likesRouter = require('./src/router/likesRotuer');
 
 
 
@@ -42,7 +42,8 @@ app.get('/', (req, res ) => {
 })
 //routerlani ishlatsh
 app.use('/user',userRouter);
-app.use('/posts', postsRouter)
+app.use('/posts', postsRouter);
+app.use('/likes', likesRouter)
 
 const MONGO_URL = process.env.MONGO_URL;
 

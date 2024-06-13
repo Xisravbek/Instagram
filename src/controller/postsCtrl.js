@@ -33,7 +33,7 @@ const postCtrl = {
                         if(err){
                             throw err
                         }
-                         removeTemp(content.tempFilePath)
+                        removeTemp(content.tempFilePath)
                         return result
                     })
                     contentType = "image"
@@ -60,7 +60,51 @@ const postCtrl = {
             }
 
         } catch (error) {
+            return res.status(503).send({message: error.message})
+        }
+    },
+    deletePost: async (req , res ) => {
+        try {
+            const {id} = req.params;
+            if(!req.user.isAdmin){
+                return res.status(405).send({message: 'Not allowed'})
+            }
+
+            const post = await Posts.findByIdAndDelete(id);
+
+            if(!post){
+                return res.status(404).send({message: "Not found"})
+            }
+
             
+        } catch (error) {
+            return res.status(503).send({message: error.message})
+        }
+    },
+
+    getPosts : async (req, res ) => {
+        try {
+            const posts = await Posts.aggregate([
+                {$lookup : {from: 'media' , let : {postId: "$_id"},
+                pipeline: [
+                    {$match: {$expr : {$eq :["$postId" , "$$postId"]}}}
+                ],
+                as: 'media'}},
+                {
+                    $lookup : {from: 'likes', let : {postId :"$_id"},
+                    pipeline: [
+                        {$match: {$expr: {$eq: ["$postId", "$$postId"]}}}
+                    ],
+                    as: "likes"
+                }}
+            ])
+            
+            
+
+            return res.status(200).send({posts})
+            
+        } catch (error) {
+            return res.status(503).send({message: error.message})
         }
     }
 }
