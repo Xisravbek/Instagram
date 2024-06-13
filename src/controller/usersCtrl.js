@@ -30,7 +30,7 @@ const userCtrl = {
 
             delete user._doc.password
 
-            const token = JWT.sign(user._doc, JWT_SECRET_KEY,{expiresIn:'5h'})
+            const token = JWT.sign(user._doc, JWT_SECRET_KEY)
 
             res.status(201).send({message:"Created user",user,token})
             
