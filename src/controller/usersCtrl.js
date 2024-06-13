@@ -149,6 +149,9 @@ const userCtrl = {
         } catch (error) {
             
         }
+    },
+    searchUsers: async (req,res) => {
+
     }
 
 }
