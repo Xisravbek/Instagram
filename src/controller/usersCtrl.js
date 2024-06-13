@@ -32,7 +32,7 @@ const userCtrl = {
 
             const token = JWT.sign(user._doc, JWT_SECRET_KEY)
 
-            res.status(201).send({message:"Created user",user,token})
+            return res.status(201).send({message:"Created user",user,token})
             
         } catch (error) {
             res.status(503).send({message: error.message})
@@ -59,7 +59,7 @@ const userCtrl = {
             delete user._doc.password
             const token = JWT.sign(user._doc, JWT_SECRET_KEY,{expiresIn:'2h'})
 
-            res.status(201).send({massage: "Login Success" , user, token})
+            return res.status(201).send({massage: "Login Success" , user, token})
 
         } catch (error) {
             res.status(503).send({message: error.message})
@@ -76,7 +76,7 @@ const userCtrl = {
                 return otherDetails
             })
 
-            res.status(200).send({message:'All Users',user})
+            return res.status(200).send({message:'All Users',user})
         } catch (error) {
             res.status(503).send({message: error.message})
             
@@ -145,13 +145,29 @@ const userCtrl = {
             
             delete user._doc.password
 
-            res.status(200).send({message:"User",user})
+           return res.status(200).send({message:"User",user})
         } catch (error) {
-            
+            res.status(503).send({message: error.message})
         }
     },
     searchUsers: async (req,res) => {
+        try {
+            const {text}=req.query
 
+            const key = new RegExp(text,"i")
+    
+            const search = await Users.find({
+                $or: [{userName: { $regex: key}}]
+            })
+            if(!search){
+                return res.status(404).send({message:`${text} sorovingiz boyicha hch km topilmadi`,search})
+
+            }
+    
+            return res.status(200).send({message:`${text}boyicha qdruv natijasi`,search})
+        } catch (error) {
+            res.status(503).send({message: error.message})
+        }
     }
 
 }
