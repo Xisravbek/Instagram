@@ -16,9 +16,6 @@ const postCtrl = {
         try {
             const userId = req.user._id;
             const {caption, isBanned } = req.body;
-            
-
-
             if(req.files){
 
                 const {content} = req.files;
