@@ -127,6 +127,23 @@ const userCtrl = {
         } catch (error) {
             res.status(503).send({message: error.message})
         }
+    },
+    getUser: async (req,res) => {
+        try {
+            const {id} = req.params
+
+            const user = await Users.findById(id)
+
+            if(!user){
+                return res.status(404).json({massage:'User not found'})
+            }
+            
+            delete user._doc.password
+
+            res.status(200).send({message:"User",user})
+        } catch (error) {
+            
+        }
     }
 
 }
