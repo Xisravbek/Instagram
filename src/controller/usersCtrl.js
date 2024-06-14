@@ -57,7 +57,7 @@ const userCtrl = {
             }
    
             delete user._doc.password
-            const token = JWT.sign(user._doc, JWT_SECRET_KEY,{expiresIn:'2h'})
+            const token = JWT.sign(user._doc, JWT_SECRET_KEY )
 
             return res.status(201).send({massage: "Login Success" , user, token})
 
