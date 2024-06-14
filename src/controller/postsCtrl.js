@@ -161,6 +161,30 @@ const postCtrl = {
         } catch (error) {
             return res.status(503).send({message: error.message})
         }
+    },
+    updatePost : async (req, res ) =>{
+        try {
+            const {caption} = req.body;
+            const {id} = req.params;
+            
+            const oldPost =  await Posts.findById(id);
+
+            if(!oldPost) {
+                return res.status(404).send({message: "not found"});
+            };
+
+            if(!req.user.isAdmin && req.user._id !== oldPost.userId){
+                return res.status(405).send({message: "not allowed"})
+            }
+
+            const post = await Posts.findByIdAndUpdate(id, {caption}, {new: true});
+
+            return res.status(200).send({message: "Updated", post})
+
+            
+        } catch (error) {
+            return res.status(503).send({message: error.message})
+        }
     }
 }
 
