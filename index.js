@@ -24,9 +24,7 @@ cloudinary.config({
 const userRouter = require('./src/router/userRouter')
 const postsRouter = require('./src/router/postsRouter');
 const likesRouter = require('./src/router/likesRotuer');
-
-
-
+const commentsRouter = require('./src/router/commentsRouter')
 
 
 //midlwares
@@ -43,7 +41,8 @@ app.get('/', (req, res ) => {
 //routerlani ishlatsh
 app.use('/user',userRouter);
 app.use('/posts', postsRouter);
-app.use('/likes', likesRouter)
+app.use('/likes', likesRouter);
+app.use('/comments', commentsRouter);
 
 const MONGO_URL = process.env.MONGO_URL;
 
