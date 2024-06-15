@@ -21,7 +21,6 @@ const userCtrl = {
 
             return res.status(200).send({message:"fallowed in succesfuly"})
         }
-        // await followed.save()
 
         return res.status(200).send({message:"fallow in deleted"})
       } catch (error) {

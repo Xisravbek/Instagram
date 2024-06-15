@@ -1,7 +1,8 @@
 const Posts = require("../model/postsModel");
 const Media = require('../model/mediaModel');
 const Comments = require('../model/CommentsModel');
-const Likes = require('../model/likesModel')
+const Likes = require('../model/likesModel');
+const Follows = require('../model/followsModel')
 const fs = require('fs');
 const cloudinary = require('cloudinary');
 const { default: mongoose } = require("mongoose");
@@ -182,6 +183,46 @@ const postCtrl = {
             return res.status(200).send({message: "Updated", post})
 
             
+        } catch (error) {
+            return res.status(503).send({message: error.message})
+        }
+    },
+    getVideos: async (req, res) => {
+        try {
+            // let medias = await Media.find({mediaType: "video"});
+            const posts  = await Posts.aggregate([
+                {
+                    $lookup : {from : 'media' , let : {postId: "$_id"},
+                    pipeline: [
+                        {$match : {$expr : {$eq : ["$postId" , "$$postId"], $eq: ["$mediaType" , "video"]}}}
+                    ],
+                    as: "media"
+                }}
+            ])
+            return res.status(200).send({message: "Get videos", posts}) 
+        } catch (error) {
+            return res.status(503).send({message: error.message})
+        }
+    },
+    getFollowedPosts: async (req, res) => {
+        try {
+            const userId = req.user._id;
+            let followeds  = await Follows.find({followerId: userId});
+            console.log(followeds);
+            const posts = await Posts.aggregate([
+                {
+                    $match: {userId : { $in: followeds.map(followed => followed.followedId) }}
+                },
+                {
+                    $lookup : {from : 'media' , let : {postId: "$_id"},
+                    pipeline: [
+                        {$match : {$expr : {$eq : ["$postId" , "$$postId"]}}}
+                    ],
+                    as: "media"
+                }}
+            ])
+            
+            return res.status(200).send({message: "Get Posts from my followed", posts})
         } catch (error) {
             return res.status(503).send({message: error.message})
         }
