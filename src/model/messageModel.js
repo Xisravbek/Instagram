@@ -11,7 +11,21 @@ const messageSchema = new mongoose.Schema({
     },
     content: {
         type: String,
-        required: true
+    },
+    file: {
+        type: String,
+    },
+    mediaType: {
+        type: String,
+        default: "none",
+        enum: ["image" , "video" , "none"]
+    },
+    publicId: {
+        type: String
+    },
+    isRead: {
+        type: Boolean,
+        default : false
     }
 },
 {

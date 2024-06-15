@@ -1,5 +1,5 @@
+const { default: mongoose } = require('mongoose');
 const Chat = require('../model/chatModel');
-const ChatParticipants = require('../model/chatParticipants');
 const Messages = require('../model/messageModel')
 
 const chatCtrl = {
@@ -11,9 +11,17 @@ const chatCtrl = {
             const oldChat = await Chat.findOne({users: [firstId , secondId]});
 
             if(oldChat){
-                const messages = await Messages.find({chatId: oldChat._id});
+                // const messages = await Messages.find({chatId: oldChat._id});
+                const chat = await Chat.aggregate([
+                    {$match: {_id :  new mongoose.Types.ObjectId(oldChat._id)}},
+                    {$lookup : {from: 'messages' , let : {chatId: "$_id"},
+                    pipeline: [
+                        {$match: {$expr : {$eq :["$chatId" , "$$chatId"]}}}
+                    ],
+                    as: 'messages'}},
+                ])
 
-                return res.status(200).send({message: "Got", chat: oldChat, messages })
+                return res.status(200).send({message: "Got", chat: chat[0] })
             }else{
                 const newChat = await Chat.create({users: [firstId ,secondId]});
                 return res.status(201).send({message: "created", chat:newChat})
