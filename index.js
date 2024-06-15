@@ -28,7 +28,8 @@ const userRouter = require('./src/router/userRouter')
 const fallowRouter = require('./src/router/fallowRouter')
 const postsRouter = require('./src/router/postsRouter');
 const likesRouter = require('./src/router/likesRotuer');
-const commentsRouter = require('./src/router/commentsRouter')
+const commentsRouter = require('./src/router/commentsRouter');
+const chatRouter = require('./src/router/chatRouter')
 
 //socket
 
@@ -60,6 +61,7 @@ app.use('/fallow',fallowRouter);
 app.use('/posts', postsRouter);
 app.use('/likes', likesRouter);
 app.use('/comments', commentsRouter);
+app.use('/chat',chatRouter )
 
 
 
