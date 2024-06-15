@@ -13,6 +13,7 @@ const likesCtrl = {
                 
                 return res.status(201).send({message: "like was added"})
             }
+            
             return res.status(200).send({message: "Like was canceled"})
 
         } catch (error) {
