@@ -46,14 +46,14 @@ const userCtrl = {
             const user = await Users.findOne({email})
 
             if(!user){
-                return res.status(404).json({message: "Email yoki parol notogri"})
+                return res.status(404).send({message: "Email yoki parol notogri"})
             }
 
             const verifiy = await bcrypt.compare(password,user.password)
 
             
             if(!verifiy){
-                return res.status(400).json({massage: "Email yoki parol notogri"})
+                return res.status(400).send({massage: "Email yoki parol notogri"})
             }
    
             delete user._doc.password
@@ -101,7 +101,7 @@ const userCtrl = {
 
                 const updateUser =await Users.findByIdAndUpdate(id,req.body,{new:true})
 
-                return res.status(200).json({massage:"User update seccessfully",user:updateUser})
+                return res.status(200).send({massage:"User update seccessfully",user:updateUser})
                 
             }
 

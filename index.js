@@ -22,6 +22,7 @@ cloudinary.config({
 
 //routerlani ulash
 const userRouter = require('./src/router/userRouter')
+const fallowRouter = require('./src/router/fallowRouter')
 const postsRouter = require('./src/router/postsRouter');
 const likesRouter = require('./src/router/likesRotuer');
 
@@ -42,6 +43,7 @@ app.get('/', (req, res ) => {
 })
 //routerlani ishlatsh
 app.use('/user',userRouter);
+app.use('/fallow',fallowRouter);
 app.use('/posts', postsRouter);
 app.use('/likes', likesRouter)
 
