@@ -4,7 +4,10 @@ const cors = require('cors')
 const dotenv = require('dotenv');
 const  mongoose  = require('mongoose');
 const cloudinary = require('cloudinary');
+const socketIo = require('socket.io')
 const fs = require('fs');
+const http = require("http");
+const path = require('path');
 
 dotenv.config();
 const app = express();
@@ -26,6 +29,15 @@ const postsRouter = require('./src/router/postsRouter');
 const likesRouter = require('./src/router/likesRotuer');
 const commentsRouter = require('./src/router/commentsRouter')
 
+//socket
+
+const server = http.createServer(app);
+const io = socketIo(server , {
+    cors: {
+        origin: '*',
+
+    }
+})
 
 //midlwares
 
@@ -33,6 +45,9 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(fileUpload({useTempFiles: true}))
 app.use(cors())
+
+
+app.use(express.static(path.join(__dirname , "src" , "public")))
 
 app.get('/', (req, res ) => {
     res.send("Home")
@@ -43,6 +58,10 @@ app.use('/user',userRouter);
 app.use('/posts', postsRouter);
 app.use('/likes', likesRouter);
 app.use('/comments', commentsRouter);
+
+
+
+
 
 const MONGO_URL = process.env.MONGO_URL;
 
