@@ -168,7 +168,8 @@ const userCtrl = {
         } catch (error) {
             res.status(503).send({message: error.message})
         }
-    }
+    },
+    
 
 }
 module.exports = userCtrl

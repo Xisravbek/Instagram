@@ -2,7 +2,8 @@ const Posts = require("../model/postsModel");
 const Media = require('../model/mediaModel');
 const Comments = require('../model/CommentsModel');
 const Likes = require('../model/likesModel');
-const Follows = require('../model/followsModel')
+const Follows = require('../model/followsModel');
+const CheckBan = require("../model/checkBanModel");
 const fs = require('fs');
 const cloudinary = require('cloudinary');
 const { default: mongoose } = require("mongoose");
@@ -223,6 +224,35 @@ const postCtrl = {
             ])
             
             return res.status(200).send({message: "Get Posts from my followed", posts})
+        } catch (error) {
+            return res.status(503).send({message: error.message})
+        }
+    },
+    banPost: async (req, res ) => {
+        try {
+            const {id} = req.params;
+            
+            if(!req.user.isAdmin){
+                return res.status(405).send({message: "Not allowed"})
+            }
+
+            const post = await Posts.findByIdAndUpdate(id , {isBanned: true} , {new: true});
+
+            if(!post) {
+                return res.status(404).send({message: "Not found"})
+            }
+        } catch (error) {
+            return res.status(503).send({message: error.message})
+        }
+    },
+    checkBan: async (req, res) => {
+        try {
+            const {id} = req.params;
+            const {banText } = req.body;
+
+            const newRequest = await CheckBan.create({postId: id , banText})
+
+            return res.status(201).send({messsage: "New Spam" , newRequest})
         } catch (error) {
             return res.status(503).send({message: error.message})
         }

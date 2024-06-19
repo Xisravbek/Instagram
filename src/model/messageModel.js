@@ -12,9 +12,6 @@ const messageSchema = new mongoose.Schema({
     content: {
         type: String,
     },
-    file: {
-        type: String,
-    },
     mediaType: {
         type: String,
         default: "none",
