@@ -17,7 +17,7 @@ const userCtrl = {
                 return res.status(400).json({message: "Bu emailli foydalanuvchi mavjud!"})
             }
 
-            if(userName){
+            if(username){
                 return res.status(400).json({message: "Bu nomli foydalanuvchi mavjud!"})
             }
             const paswordhash = await bcrypt.hash(req.body.password,10)

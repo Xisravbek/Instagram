@@ -10,7 +10,7 @@ const { default: mongoose } = require("mongoose");
 const { findByIdAndDelete } = require("../model/usersModel");
 
 const removeTemp = (path) => {
-    fs.unlink(path , err => {
+    fs.unlink(path, err => {
         if(err) {
             throw err
         }
@@ -36,7 +36,7 @@ const postCtrl = {
                         if(err){
                             throw err
                         }
-                        removeTemp(content.tempFilePath)
+                        removeTemp(content.tempFilePath);
                         return result
                     })
                     contentType = "image"

@@ -40,7 +40,7 @@ const chatCtrl = {
             return res.status(503).send({message: error.message}) 
         }
     },
-
+    
     deleteChat : async (req, res) => {
         try {
             const {id} = req.params;
